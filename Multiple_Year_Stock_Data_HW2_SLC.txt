@@ -1,0 +1,108 @@
+
+Sub StocktickerHW():
+
+'set ticker name as string variable
+    Dim TkName As String
+    
+'set open and close variable as double
+    Dim COpen As Double
+    Dim FClose As Double
+    
+'set end of year variable as double
+    Dim EOYVal As Double
+    Dim EOYPercent As Double
+    
+'set total volume variable as long
+    Dim TotalVolume As Double
+        
+        
+    i = 2
+    TotalVolume = 0
+    TicketCount = 2
+'while tickername is not null do
+    TkName = Cells(i, 1).Value
+    
+    'set values for COpen
+    COpen = Cells(i, 3).Value
+    
+    'while TkName value is not blank
+    Do While TkName <> ""
+    
+    'sum next TotalVolume value
+    TotalVolume = TotalVolume + Cells(i, 7).Value
+    
+    'check if TkName changes
+    If Cells(i + 1, 1).Value <> TkName Then
+    
+    'set values for FClose
+    FClose = Cells(i, 6).Value
+    
+        
+    'subtract values COpen from FClose to gain result EOYVal
+    EOYVal = FClose - COpen
+    
+            'divide EOYVal by original value in C and multiply by 100 to gain result EOYPercent if 0 then
+            If COpen = 0 Then
+            EOYPercent = 0
+    
+            Else
+                
+            EOYPercent = (EOYVal / COpen)
+    
+   
+            End If
+    
+        
+    'set TkName value to new column H
+    Cells(TicketCount, 8).Value = TkName
+    
+    'set EOYVal value to new column I
+    Cells(TicketCount, 9).Value = EOYVal
+    
+    'check EOYVal sign and color code accordingly
+    If EOYVal < 0 Then
+    Cells(TicketCount, 9).Interior.ColorIndex = 3
+    Else
+    Cells(TicketCount, 9).Interior.ColorIndex = 4
+    End If
+        
+    'set EOYPercent value to new column J
+    Cells(TicketCount, 10).Value = EOYPercent
+    
+    'set TotalVolume value to new column k
+    Cells(TicketCount, 11).Value = TotalVolume
+    
+    
+    TicketCount = TicketCount + 1
+    
+    TkName = Cells(i + 1, 1).Value
+    
+    TotalVolume = 0
+    
+    'set values for COpen
+    COpen = Cells(i + 1, 3).Value
+
+End If
+
+i = i + 1
+
+Loop
+
+
+    'set column header to <Ticker Name>
+    Cells(1, 8).Value = "<Ticker Name>"
+
+    'set column header to <End of Year Value>
+    Cells(1, 9).Value = "<End of Year Value>"
+    
+    'set column header to <End of Year Percent>
+    Cells(1, 10).Value = "<End of Year Percent>"
+    
+    'set column header to <Total Volume>
+    Cells(1, 11).Value = "<Total Volume>"
+    
+    'reformat column I to percent
+    Columns(10).NumberFormat = "0.00%"
+
+
+End Sub
